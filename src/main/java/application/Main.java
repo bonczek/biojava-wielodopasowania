@@ -90,8 +90,8 @@ public class Main {
             }
         });
         System.out.print("     ");
-        for (AminoAcidCompound aCompoundList : compoundList) {
-            System.out.print(aCompoundList.getShortName() + "     ");
+        for (AminoAcidCompound comp : compoundList) {
+            System.out.print(comp.getShortName() + "     ");
         }
         System.out.print("\n");
         for (int i = 1; i <= profile.getLength(); i++) {
