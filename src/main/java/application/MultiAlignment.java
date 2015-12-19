@@ -4,6 +4,7 @@ import org.biojava.nbio.alignment.Alignments;
 import org.biojava.nbio.alignment.template.Profile;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.Sequence;
+import org.biojava.nbio.core.util.ConcurrencyTools;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class MultiAlignment<S extends Sequence<C>, C extends Compound> {
      */
     public MultiAlignment(List<S> sequences, Object... settings) {
         multialignmentProfile = Alignments.getMultipleSequenceAlignment(sequences, settings);
+        ConcurrencyTools.shutdown();
     }
 
     public Profile<S, C> getMultialignmentProfile() {

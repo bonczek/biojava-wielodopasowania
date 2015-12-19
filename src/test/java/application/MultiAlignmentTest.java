@@ -26,7 +26,7 @@ public class MultiAlignmentTest {
         ConcurrencyTools.shutdown();
         System.out.println(String.format("Clustalw:\n%s\n", profile.toString(Profile.StringFormat.CLUSTALW)));
         System.out.println(String.format("Fasta:\n%s\n", profile.toString(Profile.StringFormat.FASTA)));
-        System.out.println(String.format("Fasta:\n%s\n", profile.toString(Profile.StringFormat.MSF)));
+        System.out.println(String.format("MSF:\n%s\n", profile.toString(Profile.StringFormat.MSF)));
     }
 
     @Test
