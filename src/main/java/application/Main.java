@@ -50,6 +50,13 @@ public class Main {
 
         // Przygotowanie sekwencji (tymczasowo nieuzywane)
         // todo: sprawdzic co to wlasciwie za ID, wypadaloby dorzucic troche wiecej
+        // P31946 - Homo Sapiens (Human)
+        // Q9D020 - Mus musculus (Mouse)
+        // Q8MJC8 - Gorilla gorilla gorilla (Western lowland gorilla)
+        // P68194 - Panthera tigris sumatrae (Sumatran tiger)
+        // Q1HKA1 - Canis lupus (Gray wolf)
+        // P02129 - Crocodylus niloticus (Nile crocodile)
+        // P35031 - Salmo salar (Atlantic salmon)
         /*
         String[] ids = new String[] {"Q21691", "A8WS47", "O48771"};
         List<ProteinSequence> proteinSequenceList = new ArrayList<ProteinSequence>();
