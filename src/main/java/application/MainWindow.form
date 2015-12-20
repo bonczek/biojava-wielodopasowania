@@ -215,6 +215,14 @@
           </component>
         </children>
       </scrollpane>
+      <component id="e1cc3" class="javax.swing.JButton" binding="dlFastaProtSeqB1">
+        <constraints>
+          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Importowanie"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>
