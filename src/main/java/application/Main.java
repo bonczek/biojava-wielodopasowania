@@ -50,6 +50,7 @@ public class Main {
 
         // Przygotowanie sekwencji (tymczasowo nieuzywane)
         // todo: sprawdzic co to wlasciwie za ID, wypadaloby dorzucic troche wiecej
+        // Te sa wybrane losowo
         // P31946 - Homo Sapiens (Human)
         // Q9D020 - Mus musculus (Mouse)
         // Q8MJC8 - Gorilla gorilla gorilla (Western lowland gorilla)
@@ -57,6 +58,34 @@ public class Main {
         // Q1HKA1 - Canis lupus (Gray wolf)
         // P02129 - Crocodylus niloticus (Nile crocodile)
         // P35031 - Salmo salar (Atlantic salmon)
+        //
+        // String[] ids = new String[] {"P31946", "Q9D020", "Q8MJC8", "P68194", "Q1HKA1", "P02129", "P35031"};
+        //
+        // Te wszystkie dotycza Hemoglobiny (Hemoglobun subunit Beta)
+        // Jak jest ich duzo to az tak wszystkie do siebie nie sa podobne jednak
+        // P68871 - Homo sapiens (Human)
+        // P02112 - Gallus gallus (Chicken)
+        // P02062 - Equus caballus (Horse)
+        // P02067 - Sus scrofa (Pig)
+        // P02075 - Ovis aries (Sheep)
+        // P80044 - Trematomus bernacchii (Emerald rockcod)
+        // P02070 - Bos taurus (Bovine)
+        // P18983 - Ailuropoda melanoleuca (Giant panda)
+        // P02117 - Anser anser anser (Western greylag goose)
+        // P02095 - Cavia porcellus (Guinea pig)
+        // P02053 - Eulemur fulvus fulvus (Brown lemur)
+        // P68044 - Mustela putorius furo (European domestic ferret)
+        // P68873 - Pan troglodytes (Chimpanzee)
+        // Q91473 - Salmo salar (Atlantic salmon)
+        // P02130 - Alligator mississippiensis (American alligator)
+        // P02122 - Aquila chrysaetos (Golden eagle)
+        // P09422 - Bison bonasus (European bison)
+        // P60525 - Canis latrans (Coyote)
+        // Q10733 - Caretta caretta (Loggerhead sea turtle)
+        //
+        // String[] ids = new String[] {"P68871", "P02112", "P02062", "P02067", "P02075", "P80044", "P02070",
+        //                              "P18983", "P02117", "P02095", "P02053", "P68044", "P68873", "Q91473",
+        //                              "P02130", "P02122", "P09422", "P60525", "Q10733"};
         /*
         String[] ids = new String[] {"Q21691", "A8WS47", "O48771"};
         List<ProteinSequence> proteinSequenceList = new ArrayList<ProteinSequence>();
