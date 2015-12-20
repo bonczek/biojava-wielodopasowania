@@ -1,6 +1,11 @@
 package application;
 
+import org.biojava.nbio.alignment.SimpleGapPenalty;
+import org.biojava.nbio.alignment.SimpleProfileProfileAligner;
+import org.biojava.nbio.alignment.SubstitutionMatrixHelper;
+import org.biojava.nbio.alignment.template.GapPenalty;
 import org.biojava.nbio.alignment.template.Profile;
+import org.biojava.nbio.alignment.template.SubstitutionMatrix;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
@@ -28,11 +33,14 @@ public class MainWindow extends JFrame {
     private JTextArea resultText;
     private JButton profileButton2;
     private JButton profileButton1;
+    private JButton jointAlignmentButton;
+    private JButton jointProfilesButton;
 
     MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment;
     Profile<ProteinSequence, AminoAcidCompound> aligmentProfile;
     MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment2;
     Profile<ProteinSequence, AminoAcidCompound> aligmentProfile2;
+    ProfileProfileAlignment<ProteinSequence, AminoAcidCompound> profileProfileAlignment;
 
     public MainWindow() {
         super("Wielodopasowania");
@@ -73,6 +81,28 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resultText.setText(getFormatedProfile(aligmentProfile2));
+            }
+        });
+
+        jointAlignmentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SubstitutionMatrix<AminoAcidCompound> matrix = SubstitutionMatrixHelper.getBlosum30();
+                GapPenalty penalty = new SimpleGapPenalty();
+                profileProfileAlignment = new ProfileProfileAlignment<>(matrix, penalty);
+                SimpleProfileProfileAligner<ProteinSequence, AminoAcidCompound> pa = profileProfileAlignment.getProfilesAlignment(aligmentProfile, aligmentProfile2);
+                resultText.setText(pa.getProfile().toString());
+            }
+        });
+
+        jointProfilesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SubstitutionMatrix<AminoAcidCompound> matrix = SubstitutionMatrixHelper.getBlosum30();
+                GapPenalty penalty = new SimpleGapPenalty();
+                profileProfileAlignment = new ProfileProfileAlignment<>(matrix, penalty);
+                SimpleProfileProfileAligner<ProteinSequence, AminoAcidCompound> pa = profileProfileAlignment.getProfilesAlignment(aligmentProfile, aligmentProfile2);
+                resultText.setText(getFormatedProfile(pa.getProfile()));
             }
         });
     }
