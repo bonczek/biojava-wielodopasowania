@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="application.MainWindow">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="15" left="15" bottom="15" right="15"/>
+    <constraints>
+      <xy x="20" y="20" width="1138" height="438"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="6e753" class="javax.swing.JTextArea" binding="sequenceText">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Consolas"/>
+        </properties>
+      </component>
+      <component id="e8008" class="javax.swing.JTextArea" binding="alignmentText">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Consolas"/>
+        </properties>
+      </component>
+      <component id="9aae6" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Wielodopasowanie (1):"/>
+        </properties>
+      </component>
+      <component id="b159b" class="javax.swing.JButton" binding="multiAlignmentButton">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Stwórz wielodopasowanie"/>
+        </properties>
+      </component>
+      <component id="7ec0" class="javax.swing.JTextArea" binding="sequenceText2">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Consolas"/>
+        </properties>
+      </component>
+      <component id="fecff" class="javax.swing.JButton" binding="multiAlignmentButton2">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Stwórz wielodopasowanie"/>
+        </properties>
+      </component>
+      <component id="1834f" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Wielodopasowanie (2):"/>
+        </properties>
+      </component>
+      <component id="cdb7" class="javax.swing.JTextArea" binding="alignmentText2">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="250" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Consolas"/>
+        </properties>
+      </component>
+      <component id="3ad8b" class="javax.swing.JTextArea" binding="resultText">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="400" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Consolas"/>
+        </properties>
+      </component>
+      <component id="93be8" class="javax.swing.JButton" binding="profileButton2">
+        <constraints>
+          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Profil 2"/>
+        </properties>
+      </component>
+      <component id="be698" class="javax.swing.JButton" binding="profileButton1">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Profil 1"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
