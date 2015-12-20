@@ -35,12 +35,23 @@ public class MainWindow extends JFrame {
     private JButton profileButton1;
     private JButton jointAlignmentButton;
     private JButton jointProfilesButton;
+    private JButton consWordButton1;
+    private JButton consWordButton2;
+    private JButton consWordJointButton;
+    private JComboBox<String[]> matrixCombo;
+    private JTextField penaltyOpenText;
+    private JTextField penaltyExtendText;
 
-    MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment;
-    Profile<ProteinSequence, AminoAcidCompound> aligmentProfile;
-    MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment2;
-    Profile<ProteinSequence, AminoAcidCompound> aligmentProfile2;
-    ProfileProfileAlignment<ProteinSequence, AminoAcidCompound> profileProfileAlignment;
+    MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment = null;
+    Profile<ProteinSequence, AminoAcidCompound> aligmentProfile = null;
+    MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment2 = null;
+    Profile<ProteinSequence, AminoAcidCompound> aligmentProfile2 = null;
+    ProfileProfileAlignment<ProteinSequence, AminoAcidCompound> profileProfileAlignment = null;
+    Profile<ProteinSequence, AminoAcidCompound> jointProfile = null;
+    SubstitutionMatrix<AminoAcidCompound> matrix = SubstitutionMatrixHelper.getBlosum30();
+    GapPenalty gapPenalty = new SimpleGapPenalty();
+    private int openPenalty = 10;
+    private int extendPenalty = 1;
 
     public MainWindow() {
         super("Wielodopasowania");
@@ -48,9 +59,79 @@ public class MainWindow extends JFrame {
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        populateMatrixComboBox();
 
         sequenceText.setText("ABCA\nABABA\nACCB\nCBBC");
         sequenceText2.setText("ABBB\nABCA\nAABCC\nBCCB");
+        penaltyOpenText.setText("10");
+        penaltyExtendText.setText("1");
+
+        matrixCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // todo: zrobic to jakos bardziej elegancko moze? na szybko pojechalem - wiem, ze smiesznie wyglada :D
+                switch (matrixCombo.getSelectedItem().toString()) {
+                    case "Blosum 30":
+                        matrix = SubstitutionMatrixHelper.getBlosum30();
+                        break;
+                    case "Blosum 45":
+                        matrix = SubstitutionMatrixHelper.getBlosum45();
+                        break;
+                    case "Blosum 60":
+                        matrix = SubstitutionMatrixHelper.getBlosum60();
+                        break;
+                    case "Blosum 75":
+                        matrix = SubstitutionMatrixHelper.getBlosum75();
+                        break;
+                    case "Blosum 90":
+                        matrix = SubstitutionMatrixHelper.getBlosum90();
+                        break;
+                    case "PAM 250":
+                        matrix = SubstitutionMatrixHelper.getPAM250();
+                        break;
+                    default:
+                        System.err.println("Error in combo box, entry not found");
+                }
+            }
+        });
+
+        penaltyOpenText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int op = -1;
+                try {
+                    op = Integer.parseInt(penaltyOpenText.getText());
+                    if (op < 0)
+                        throw null;
+                }
+                catch (Exception ex) {
+                    resultText.setText("Kara musi być liczbą całkowitą większą od 0");
+                    penaltyOpenText.setText(String.valueOf(openPenalty));
+                    return;
+                }
+                openPenalty = op;
+                gapPenalty = new SimpleGapPenalty(openPenalty, extendPenalty);
+            }
+        });
+
+        penaltyExtendText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ep = -1;
+                try {
+                    ep = Integer.parseInt(penaltyExtendText.getText());
+                    if (ep < 0)
+                        throw null;
+                }
+                catch (Exception ex) {
+                    resultText.setText("Kara musi być liczbą całkowitą większą od 0");
+                    penaltyExtendText.setText(String.valueOf(extendPenalty));
+                    return;
+                }
+                extendPenalty = ep;
+                gapPenalty = new SimpleGapPenalty(openPenalty, extendPenalty);
+            }
+        });
 
         multiAlignmentButton.addActionListener(new ActionListener() {
             @Override
@@ -73,6 +154,10 @@ public class MainWindow extends JFrame {
         profileButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (aligmentProfile == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowanie!");
+                    return;
+                }
                 resultText.setText(getFormatedProfile(aligmentProfile));
             }
         });
@@ -80,6 +165,10 @@ public class MainWindow extends JFrame {
         profileButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (aligmentProfile2 == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowanie!");
+                    return;
+                }
                 resultText.setText(getFormatedProfile(aligmentProfile2));
             }
         });
@@ -87,32 +176,98 @@ public class MainWindow extends JFrame {
         jointAlignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SubstitutionMatrix<AminoAcidCompound> matrix = SubstitutionMatrixHelper.getBlosum30();
-                GapPenalty penalty = new SimpleGapPenalty();
-                profileProfileAlignment = new ProfileProfileAlignment<>(matrix, penalty);
+                if (aligmentProfile == null || aligmentProfile2 == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowania!");
+                    return;
+                }
+                profileProfileAlignment = new ProfileProfileAlignment<>(matrix, gapPenalty);
                 SimpleProfileProfileAligner<ProteinSequence, AminoAcidCompound> pa = profileProfileAlignment.getProfilesAlignment(aligmentProfile, aligmentProfile2);
-                resultText.setText(pa.getProfile().toString());
+                jointProfile = pa.getProfile();
+                resultText.setText(jointProfile.toString());
             }
         });
 
         jointProfilesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SubstitutionMatrix<AminoAcidCompound> matrix = SubstitutionMatrixHelper.getBlosum30();
-                GapPenalty penalty = new SimpleGapPenalty();
-                profileProfileAlignment = new ProfileProfileAlignment<>(matrix, penalty);
-                SimpleProfileProfileAligner<ProteinSequence, AminoAcidCompound> pa = profileProfileAlignment.getProfilesAlignment(aligmentProfile, aligmentProfile2);
-                resultText.setText(getFormatedProfile(pa.getProfile()));
+                if (aligmentProfile == null || aligmentProfile2 == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowania!");
+                    return;
+                }
+                resultText.setText(getFormatedProfile(jointProfile));
+            }
+        });
+
+        consWordButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (aligmentProfile == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowanie!");
+                    return;
+                }
+                resultText.setText(getConsensusWord(aligmentProfile));
+            }
+        });
+
+        consWordButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (aligmentProfile2 == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowanie!");
+                    return;
+                }
+                resultText.setText(getConsensusWord(aligmentProfile2));
+            }
+        });
+
+        consWordJointButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (aligmentProfile == null || aligmentProfile2 == null) {
+                    resultText.setText("Musisz najpierw stworzyc dopasowania!");
+                    return;
+                }
+                resultText.setText(getConsensusWord(jointProfile));
             }
         });
     }
 
-    private static String getFormatedProfile(Profile<ProteinSequence, AminoAcidCompound> profile)
+    private void populateMatrixComboBox()
+    {
+        String[] matrices = {"Blosum 30", "Blosum 45", "Blosum 60", "Blosum 75", "Blosum 90", "PAM 250"};
+        matrixCombo.setModel(new DefaultComboBoxModel(matrices));
+    }
+
+    private static String getConsensusWord(Profile<ProteinSequence, AminoAcidCompound> profile)
     {
         /**
-         * Print do konsoli danego profilu z filtrowaniem aminokwasow i formatowaniem tabeli
+         * Znajduje slowo konsensusowe dla danego profilu
          */
         String result = "";
+        List<AminoAcidCompound> compoundList = getCompoundList(profile);
+
+        for (int i = 1; i <= profile.getLength(); i++) {
+            // dla kazdej pozycji...
+            float[] weights = profile.getCompoundWeightsAt(i, compoundList);
+            float maxWeight = 0;
+            String dominantLetter = "-";
+            for (int j = 0; j < compoundList.size(); j++) {
+                // sprawdz wszystkie wagi i znajdz najwyzsza
+                if (weights[j] > maxWeight) {
+                    maxWeight = weights[j];
+                    dominantLetter = compoundList.get(j).getShortName();
+                }
+            }
+            result += dominantLetter;
+        }
+        return result;
+    }
+
+    private static List<AminoAcidCompound> getCompoundList(Profile<ProteinSequence, AminoAcidCompound> profile)
+    {
+        /**
+         * Zwraca liste aminokwasow wystepujacych w danym profilu (wyrzuca z alfabetu wszystkie niewystepujace)
+         */
         List<AminoAcidCompound> compoundList = new ArrayList<AminoAcidCompound>();
         for (int i = 1; i <= profile.getLength(); i++) {
             List<AminoAcidCompound> compoundListAtPosition = profile.getCompoundsAt(i);
@@ -128,15 +283,25 @@ public class MainWindow extends JFrame {
                 return  comp1.getShortName().compareTo(comp2.getShortName());
             }
         });
+        return compoundList;
+    }
 
-        // numery
+    private static String getFormatedProfile(Profile<ProteinSequence, AminoAcidCompound> profile)
+    {
+        /**
+         * Print do konsoli danego profilu z filtrowaniem aminokwasow i formatowaniem tabeli
+         */
+        String result = "";
+        List<AminoAcidCompound> compoundList = getCompoundList(profile);
+
+        // numery (tytuly kolumn)
         result += "     ";
         for (int i = 1; i <= profile.getLength(); i++) {
             result += String.format("%-5s  ", i);
         }
         result += "\n";
 
-        // aminokwasy + wartosci
+        // aminokwasy (tytuly wierszy) + wartosci
         for (int i = 0; i < compoundList.size(); i++) {
             result += compoundList.get(i).getShortName() + "  ";
             for (int j = 1; j <= profile.getLength(); j++) {
@@ -158,6 +323,6 @@ public class MainWindow extends JFrame {
                 System.err.println(String.format("Niepoprawne sekwencje bialek\n%s", e.getMessage()));
             }
         }
-        return new MultiAlignment<>(proteinSequenceList);
+        return new MultiAlignment<>(proteinSequenceList, gapPenalty, matrix);
     }
 }
