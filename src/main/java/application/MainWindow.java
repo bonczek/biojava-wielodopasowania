@@ -9,10 +9,12 @@ import org.biojava.nbio.alignment.template.SubstitutionMatrix;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
+import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,6 +43,7 @@ public class MainWindow extends JFrame {
     private JComboBox<String[]> matrixCombo;
     private JTextField penaltyOpenText;
     private JTextField penaltyExtendText;
+    private JButton dlFastaProtSeqB1;
 
     MultiAlignment<ProteinSequence, AminoAcidCompound> multiAlignment = null;
     Profile<ProteinSequence, AminoAcidCompound> aligmentProfile = null;
@@ -230,6 +233,32 @@ public class MainWindow extends JFrame {
                 resultText.setText(getConsensusWord(jointProfile));
             }
         });
+
+        dlFastaProtSeqB1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    String tempstr = String.valueOf(getSequenceForId(JOptionPane.showInputDialog("Podaj ID do zaimportowania")));
+                    Object[] options = { "1", "2" };
+                    int n = JOptionPane.showOptionDialog(null, "Dla którego wielodopasowania chcesz zaimportować sekwencję?", "Importowanie",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                            null, options, options[0]);
+
+                    if (n == 0){
+                        sequenceText.append(tempstr);
+                        sequenceText.append("\n");
+                    }
+                    else if (n == 1){
+                        sequenceText2.append(tempstr);
+                    }
+
+
+                } catch (Exception exc) {
+                    System.out.printf("Couldn't get the sequence");
+                }
+            }
+        });
     }
 
     private void populateMatrixComboBox()
@@ -324,5 +353,16 @@ public class MainWindow extends JFrame {
             }
         }
         return new MultiAlignment<>(proteinSequenceList, gapPenalty, matrix);
+    }
+
+    private static ProteinSequence getSequenceForId(String uniProtId) throws Exception {
+        /**
+         * Pobiera z http://uniprot.org/ sekwencje protein o danym ID
+         */
+        uniProtId = uniProtId.toUpperCase();
+        URL uniprotFasta = new URL(String.format("http://www.uniprot.org/uniprot/%s.fasta", uniProtId));
+        ProteinSequence seq = FastaReaderHelper.readFastaProteinSequence(uniprotFasta.openStream()).get(uniProtId);
+        //System.out.printf("%s%n",seq);
+        return seq;
     }
 }

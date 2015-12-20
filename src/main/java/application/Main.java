@@ -157,7 +157,7 @@ public class Main {
          */
         URL uniprotFasta = new URL(String.format("http://www.uniprot.org/uniprot/%s.fasta", uniProtId));
         ProteinSequence seq = FastaReaderHelper.readFastaProteinSequence(uniprotFasta.openStream()).get(uniProtId);
-        System.out.printf("id : %s %s%n%s%n", uniProtId, seq, seq.getOriginalHeader());
+        System.out.printf("%s%n",seq);
         return seq;
     }
 
