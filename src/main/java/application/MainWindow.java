@@ -72,7 +72,6 @@ public class MainWindow extends JFrame {
         matrixCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // todo: zrobic to jakos bardziej elegancko moze? na szybko pojechalem - wiem, ze smiesznie wyglada :D
                 switch (matrixCombo.getSelectedItem().toString()) {
                     case "Blosum 30":
                         matrix = SubstitutionMatrixHelper.getBlosum30();
@@ -234,6 +233,7 @@ public class MainWindow extends JFrame {
             }
         });
 
+        //pobieranie sekwencji fasta ze strony
         dlFastaProtSeqB1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
